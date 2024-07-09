@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "opencv2/opencv.hpp"
+#include <time.h>
 
 using namespace std;
 using namespace cv;
@@ -20,7 +21,6 @@ Mat image;
 
 vector<vector<int>> init_pixels;
 
-// function which will be called on mouse input
 void InitPixel(int action, int x, int y, int flags, void* userdata)
 {
     vector<int> init_pixel;
@@ -57,22 +57,27 @@ void InitPixel(int action, int x, int y, int flags, void* userdata)
 // Main function
 int main(int argc, char** args)
 {
-    image = imread(args[1]);
+    image = imread("test_2.png");
     int k = 5;
-    namedWindow("Window");
-    // highgui function called when mouse events occur
+
+    namedWindow("Window", WINDOW_NORMAL);
+    
     setMouseCallback("Window", InitPixel);
 
     int q = 0;
-    // loop until q character is pressed
+    
     while (q != 113)
     {
         imshow("Window", image);
         q = waitKey(0);
     }
     destroyAllWindows();
+    clock_t start = clock();
     image = background_segmentation_by_knn(image, init_pixels, k);
-    imshow("res", image);
+    clock_t end = clock();
+    double seconds = (double)(end - start) / CLOCKS_PER_SEC;
+    cout << seconds;
+    imwrite("res.png", image);
     waitKey(0);
     return 0;
 }
@@ -105,14 +110,3 @@ Mat background_segmentation_by_knn(Mat im, vector<vector<int>> init_pixels, int 
 	}
 	return im;
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
