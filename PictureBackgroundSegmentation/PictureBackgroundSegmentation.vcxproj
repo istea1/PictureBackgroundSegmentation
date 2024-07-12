@@ -145,7 +145,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="make_mask.cpp" />
     <ClCompile Include="PictureBackgroundSegmentation.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="make_mask.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
