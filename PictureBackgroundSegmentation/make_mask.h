@@ -5,6 +5,7 @@
 #include <opencv2/flann.hpp>
 #include <windows.h>
 #include <ppl.h>
+#include <immintrin.h>
 
 using namespace std;
 using namespace cv;

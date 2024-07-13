@@ -46,8 +46,9 @@ void InitPixel(int action, int x, int y, int flags, void* userdata)
 
 int main(int argc, char** args)
 {
-    image = imread("plastics_aligned.png");
+    image = imread(args[1]);
     image = masking_image(image, 1);
+    //testing();
     namedWindow("out", WINDOW_NORMAL);
     imshow("out", image);
     waitKey(0);
@@ -88,7 +89,7 @@ void testing() {
         float max_seconds = -9999999;
         float mid_seconds = 0;
         cout << "k = " << k << "\n";
-        while (j < 5) {
+        while (j < 1) {
             Mat res = masking_image(image, k);
             string file_name = "res_k_=_" + to_string(k) + "_try_=_" + to_string(j + 1) + ".png";
             imwrite("version_01_test//" + file_name, res);
