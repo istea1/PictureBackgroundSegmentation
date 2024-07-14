@@ -4,6 +4,8 @@
 #include "string.h"
 #include <opencv2/flann.hpp>
 #include <windows.h>
+#include <map>
+#include <thread>
 #include <ppl.h>
 #include <immintrin.h>
 

@@ -47,7 +47,7 @@ void InitPixel(int action, int x, int y, int flags, void* userdata)
 int main(int argc, char** args)
 {
     image = imread(args[1]);
-    image = masking_image(image, 1);
+    image = masking_image(image, 3);
     //testing();
     namedWindow("out", WINDOW_NORMAL);
     imshow("out", image);
