@@ -46,8 +46,9 @@ void InitPixel(int action, int x, int y, int flags, void* userdata)
 
 int main(int argc, char** args)
 {
+    setlocale(LC_ALL, "Russian");
     image = imread(args[1]);
-    image = masking_image(image, 1);
+    image = masking_image(image, 5);
     //testing();
     namedWindow("out", WINDOW_NORMAL);
     imshow("out", image);
@@ -69,8 +70,11 @@ Mat masking_image(Mat img, int k) {
         q = waitKey(0);
     }
     destroyAllWindows();
+    int num_threads;
+    cout << "Введите максимальное число потоков, которое поддерживает ваш процессор: ";
+    cin >> num_threads;
     clock_t start = clock();
-    Mat res = background_segmentation_by_knn(img, init_pixels_global, k);
+    Mat res = background_segmentation_by_knn(img, init_pixels_global, k, num_threads);
     init_pixels_global = empty_vec;
     clock_t end = clock();
     double seconds = (double)(end - start) / CLOCKS_PER_SEC;
@@ -89,7 +93,7 @@ void testing() {
         float max_seconds = -9999999;
         float mid_seconds = 0;
         cout << "k = " << k << "\n";
-        while (j < 1) {
+        while (j < 5) {
             Mat res = masking_image(image, k);
             string file_name = "res_k_=_" + to_string(k) + "_try_=_" + to_string(j + 1) + ".png";
             imwrite("version_01_test//" + file_name, res);
