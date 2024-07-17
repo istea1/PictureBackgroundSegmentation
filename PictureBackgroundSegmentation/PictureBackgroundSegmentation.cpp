@@ -2,14 +2,19 @@
 //
 
 #include "make_mask.h"
+#include "getting_init_pixels.h"
 
 using namespace concurrency;
 using namespace std;
 using namespace cv;
 
+void save_init_pixels(Mat im);
+
 Mat masking_image(Mat img, int k);
 
 void testing();
+
+void compare_my_and_orig_masks(Mat im, int k);
 
 Mat image;
 
@@ -48,33 +53,41 @@ int main(int argc, char** args)
 {
     setlocale(LC_ALL, "Russian");
     image = imread(args[1]);
-    image = masking_image(image, 5);
+    //save_init_pixels(image);
+    Mat image_mask = masking_image(image, 5);
     //testing();
     namedWindow("out", WINDOW_NORMAL);
-    imshow("out", image);
+    imshow("out", image_mask);
     waitKey(0);
     return 0;
 }
 
-Mat masking_image(Mat img, int k) {
+void save_init_pixels(Mat im) {
     namedWindow("Window", WINDOW_NORMAL);
     setMouseCallback("Window", InitPixel);
 
     int q = 0;
 
-    vector<vector<int>> empty_vec = {};
-
     while (q != 113)
     {
-        imshow("Window", img);
+        imshow("Window", im);
         q = waitKey(0);
     }
     destroyAllWindows();
-    int num_threads;
-    cout << "Введите максимальное число потоков, которое поддерживает ваш процессор: ";
-    cin >> num_threads;
+    send_init_pixels_to_file(init_pixels_global, 1);
+}
+
+void compare_my_and_orig_masks(Mat im, int k) {
+    
+}
+
+Mat masking_image(Mat img, int k) {
+    vector<vector<int>> init_pixels = get_init_pixels_from_file();
+    //init_pixels = sort_init_pixels(init_pixels, k);
+    int num_threads = 12;
+    vector<vector<int>> empty_vec = {};
     clock_t start = clock();
-    Mat res = background_segmentation_by_knn(img, init_pixels_global, k, num_threads);
+    Mat res = background_segmentation_by_knn(img, init_pixels, k, num_threads);
     init_pixels_global = empty_vec;
     clock_t end = clock();
     double seconds = (double)(end - start) / CLOCKS_PER_SEC;

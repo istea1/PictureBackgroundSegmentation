@@ -145,10 +145,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="getting_init_pixels.cpp" />
     <ClCompile Include="make_mask.cpp" />
     <ClCompile Include="PictureBackgroundSegmentation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="getting_init_pixels.h" />
     <ClInclude Include="make_mask.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

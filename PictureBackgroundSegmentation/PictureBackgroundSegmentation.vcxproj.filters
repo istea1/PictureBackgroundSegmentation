@@ -21,9 +21,15 @@
     <ClCompile Include="make_mask.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="getting_init_pixels.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="make_mask.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="getting_init_pixels.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
