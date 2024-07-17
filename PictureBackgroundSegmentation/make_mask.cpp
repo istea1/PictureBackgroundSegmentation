@@ -23,25 +23,20 @@ Mat background_segmentation_by_knn(Mat img, vector<vector<int>> init_pixels, int
     auto thread_func = [init_pixels, k, num_threads](Mat im, int thread_id, int distance, vector<float> distances, vector<int> m) {
         int i = im.rows / num_threads * thread_id;
         int i_fin = im.rows / num_threads * (thread_id + 1);
-        __m128i i_c, n_c, minuss;
         for (; i < i_fin; i++) {
             for (int j = 0; j < im.cols; j++) {
-                m = { 0, 0 };
                 Vec3b now_color = im.at<Vec3b>(i, j);
-                n_c = _mm_set_epi32(now_color[0], now_color[1], now_color[2], 0);
                 for (int d = 0; d < init_pixels.size(); d++) {
-                    i_c = _mm_set_epi32(init_pixels[d][3], init_pixels[d][4], init_pixels[d][5], 0);
-                    minuss = _mm_sub_epi32(n_c, i_c);
-                    int* minusss = (int*)&minuss;
                     distance =
-                        minusss[3] * minusss[3] +
-                        minusss[2] * minusss[2] +
-                        minusss[1] * minusss[1];
+                        ((now_color[0] - init_pixels[d][3]) * (now_color[0] - init_pixels[d][3])) +
+                        ((now_color[1] - init_pixels[d][4]) * (now_color[1] - init_pixels[d][4])) +
+                        ((now_color[2] - init_pixels[d][5]) * (now_color[2] - init_pixels[d][5]));
                     distances[d] = distance + 0.1 * init_pixels[d][2];
                 }
                 partial_sort(distances.begin(), distances.begin() + k, distances.end());
+                int m[2] = { 0, 0 };
                 for (int c = 0; c < k; c++) {
-                    m[distances[c] * 10 - int(distances[c]) * 10] += 1;
+                    m[int(distances[c] * 10 - int(distances[c]) * 10)] += 1;
                 }
                 if (m[0] > m[1]) {
                     im.at<Vec3b>(i, j) = Vec3b(0, 0, 0);
