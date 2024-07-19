@@ -21,7 +21,7 @@ void send_init_pixels_to_file(vector<vector<int>> i_ps, int mode) {
 
 vector<vector<int>> get_init_pixels_from_file() {
     ifstream i_file;
-    i_file.open("init_pixels_1_time.txt");
+    i_file.open("init_pixels.txt");
     string st;
     vector<vector<int>> i_ps;
     int j_0 = 0;
@@ -49,26 +49,28 @@ vector<vector<int>> get_init_pixels_from_file() {
 vector<vector<int>> sort_init_pixels(vector<vector<int>> i_ps, int k) {
     int bg_p = 0;
     int obj_p = 0;
-    vector<vector<int>> i_ps_res(size_t(k * 5));
+    int need_bg_p = k * 3;
+    int need_obj_p = k * 4;
+    vector<vector<int>> i_ps_res(size_t(need_obj_p + need_bg_p));
     random_shuffle(i_ps.begin(), i_ps.end());
     int i = 0;
     int j = 0;
     while (i < i_ps.size()) {
         if (i_ps[i][2] == 0) {
-            if (bg_p < k * 2) {
+            if (bg_p < need_bg_p) {
                 bg_p += 1;
                 i_ps_res[j] = i_ps[i];
                 j += 1;
             }
         }
         if (i_ps[i][2] == 1) {
-            if (obj_p < k * 3) {
+            if (obj_p < need_obj_p) {
                 obj_p += 1;
                 i_ps_res[j] = i_ps[i];
                 j += 1;
             }
         }
-        if (obj_p >= k * 3 and bg_p >= k * 2) {
+        if (obj_p >= need_obj_p and bg_p >= need_bg_p) {
             i = i_ps.size();
         }
         i+=1;
