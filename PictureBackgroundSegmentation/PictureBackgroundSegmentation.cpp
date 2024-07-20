@@ -52,13 +52,13 @@ void InitPixel(int action, int x, int y, int flags, void* userdata)
 int main(int argc, char** args)
 {
     //setlocale(LC_ALL, "Russian");
-    image = imread(args[1]);
-    ////save_init_pixels(image);
-    Mat image_mask = masking_image(image, 5);
-    //testing();
-    Mat comp = compare_mask_and_orig(image, image_mask);
-    namedWindow("out", WINDOW_NORMAL);
-    imwrite("comp.png", comp);
+    //image = imread(args[1]);
+    //////save_init_pixels(image);
+    //Mat image_mask = masking_image(image, 5);
+    testing();
+    //Mat comp = compare_mask_and_orig(image, image_mask);
+    //namedWindow("out", WINDOW_NORMAL);
+    //imshow("out", comp);
     waitKey(0);
     return 0;
 }
@@ -91,10 +91,10 @@ Mat compare_mask_and_orig(Mat im, Mat mask) {
 }
 
 Mat masking_image(Mat img, int k) {
-    //vector<vector<int>> init_pixels = get_init_pixels_from_file();
-    //init_pixels = sort_init_pixels(init_pixels, k);
-    save_init_pixels(img);
-    vector<vector<int>> init_pixels = init_pixels_global;
+    vector<vector<int>> init_pixels = get_init_pixels_from_file();
+    init_pixels = sort_init_pixels(init_pixels, k);
+    /*save_init_pixels(img);
+    vector<vector<int>> init_pixels = init_pixels_global;*/
     int num_threads = 12;
     //vector<vector<int>> empty_vec = {};
     clock_t start = clock();
@@ -122,7 +122,7 @@ void testing() {
         while (j < 5) {
             res = masking_image(image, k);
             file_name = to_string(k) + "_" + to_string(j + 1) + ".png";
-            imwrite("version_avx_test//" + file_name, res);
+            imwrite("test//" + file_name, res);
             j += 1;
         }
         i += 1;
